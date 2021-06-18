@@ -1,0 +1,82 @@
+body {
+    background-color:white;
+}
+
+.banner {
+    background-image: url(../img/header2.jpg);
+    background-size: 100% 100%;
+    height: 300px;
+    width: 100%;
+    border-radius: 20px;
+}
+
+.headerContainer {
+    /* width: 80%; */
+    margin: auto;
+}
+
+.navbar-light {
+    /* opacity: 0.2; */
+    background-color: white !important;
+    color: white !important;
+}
+
+.navbar-light a {
+    /* color: purple !important; */
+    font-size: 16px;
+    font-family: 'Merriweather', serif;
+    margin-left: 20px;
+}
+
+.navbar-light a:hover {
+    color: white !important;
+    background-color: rgba(128, 0, 128, 0.315);
+    border-radius: 10px;
+}
+
+
+/* .navbar-light .navbar-brand {
+    font-size: 0px;
+} */
+
+.navIcon {
+    width: 40px;
+    /* background-color: rgba(128, 0, 128, 0.363); */
+}
+
+.navIcon:hover {
+    background-color: white;
+}
+
+
+.myCanvas {
+    background-color: white;
+    border: 1px solid white;
+    margin: 35px 35px;
+    padding: 10px 10px;
+}
+.UnitCircleButtons {
+    margin-left: 30px;
+    padding-bottom: 30px;
+}
+
+.container{
+    max-width: 1350px;
+    margin-top: 50px;
+}
+.coordinates div{
+    display: inline;
+}
+/* .dropdown{
+     /* margin-bottom: 0px; */
+     /* margin-left: 75px; */
+     /* margin-top: 50px; */
+     /* background-color: green; */
+/* } */ 
+.dropdown {
+    display: inline-block;
+}
+.graphs{
+    max-width: 1550px;
+}
+
