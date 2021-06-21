@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from scipy import signal
 from flask import Flask, render_template, request
 angel = np.arange(0, 181, 1)
+z=[]
+p=[]
 app = Flask(__name__, template_folder='html', static_folder='static')
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -42,7 +44,7 @@ def all_passfilter(zeros: list, poles: list, z: list, p: list):
     try:
         for i in z:
             mag = 1/(((i[0])**2+(i[1])**2) ** 0.5)
-            phase = -1 * math.tan(i[0]/i[1])
+            phase = -1 * math.tan(i[1]/i[0])
             poles.append([mag*math.cos(phase), mag*math.sin(phase)])
             filtered_transfer_function /= np.exp(1j *
                                                  angel*np.pi/180) - (mag * np.exp(1j*phase))
@@ -50,7 +52,7 @@ def all_passfilter(zeros: list, poles: list, z: list, p: list):
         try:
             for i in p:
                 mag = 1/(((i[0])**2+(i[1])**2) ** 0.5)
-                phase = -1 * math.tan(i[0]/i[1])
+                phase = -1 * math.tan(i[1]/i[0])
                 zeros.append([mag*math.cos(phase), mag*math.sin(phase)])
                 filtered_transfer_function *= np.exp(
                     1j*angel*np.pi/180) - (mag * np.exp(1j*phase))
@@ -67,9 +69,9 @@ def all_passfilter(zeros: list, poles: list, z: list, p: list):
 def get_transfer_function(zeros, poles):
     transfer_function = 1
     for i in zeros:
-        transfer_function *= np.exp(-1j*angel*np.pi/180)-np.complex(i[1], i[0])
+        transfer_function *= np.exp(-1j*angel*np.pi/180)-np.complex(i[0], i[1])
     for i in poles:
-        transfer_function /= np.exp(-1j*angel*np.pi/180)-np.complex(i[1], i[0])
+        transfer_function /= np.exp(-1j*angel*np.pi/180)-np.complex(i[0], i[1])
     return transfer_function
 
 
@@ -89,11 +91,17 @@ def index():
 def running():
     zeros = request.get_json().get("zeros")
     poles = request.get_json().get("poles")
-    z = request.get_json().get("zeros_out_of_range")
-    p = request.get_json().get("poles_out_of_range")
+    # z = request.get_json().get("zeros_out_of_range")
+    # p = request.get_json().get("poles_out_of_range")
+    for i in zeros:
+        if (((i[0])**2+(i[1])**2) ** 0.5>1):
+            z.append(i)
+    for i in poles:
+        if (((i[0])**2+(i[1])**2) ** 0.5>1):
+            p.append(i)
     print(f"received request with parameters: zeros={zeros}, poles={poles}")
     zeros, poles = begin(zeros, poles, z, p)
-    return render_template("index.html", zeros=zeros, poles=poles)
+    return render_template("index.html", zeros=zeros, poles=poles,p=p,z=z)
 
 
 if __name__ == '__main__':
